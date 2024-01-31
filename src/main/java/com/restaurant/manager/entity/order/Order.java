@@ -19,13 +19,14 @@ public class Order {
     private Double price;
 
     @OneToMany(mappedBy = "id.order", cascade = CascadeType.ALL)
-    private List<ProductOrder> productOrders;
+    private List<ProductOrder> products;
 
     public Order() {
     }
 
-    public Order(Double price) {
+    public Order(Double price, List<ProductOrder> products) {
         this.price = price;
+        this.products = products;
     }
 
     public Long getId() {
@@ -42,6 +43,10 @@ public class Order {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public List<ProductOrder> getProducts() {
+        return products;
     }
 
     @Override

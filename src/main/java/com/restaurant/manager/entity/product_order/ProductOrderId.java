@@ -20,6 +20,22 @@ public class ProductOrderId implements Serializable {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    public ProductOrderId() {
+    }
+
+    public ProductOrderId(Order order, Product product) {
+        this.order = order;
+        this.product = product;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

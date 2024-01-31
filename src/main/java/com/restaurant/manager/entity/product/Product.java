@@ -2,7 +2,6 @@ package com.restaurant.manager.entity.product;
 
 import com.restaurant.manager.entity.category.Category;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Type;
 
 import java.util.Objects;
 
@@ -22,6 +21,7 @@ public class Product {
     private Double price;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "CATEGORY")
     private Category category;
 
     public Product() {
