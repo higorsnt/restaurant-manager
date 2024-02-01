@@ -49,6 +49,10 @@ public class Order {
         return products;
     }
 
+    public void addProduct(ProductOrder productOrder) {
+        this.products.add(productOrder);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -2,12 +2,14 @@ package com.restaurant.manager.business.order;
 
 import com.restaurant.manager.business.product.ProductService;
 import com.restaurant.manager.dto.order.CreateOrderDto;
+import com.restaurant.manager.dto.order.NewProductDto;
 import com.restaurant.manager.dto.order.OrderDto;
-import com.restaurant.manager.dto.product.ProductDto;
+import com.restaurant.manager.dto.order.OrderPageDto;
 import com.restaurant.manager.entity.order.Order;
 import com.restaurant.manager.entity.product.Product;
 import com.restaurant.manager.entity.product_order.ProductOrder;
 import com.restaurant.manager.entity.product_order.ProductOrderId;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +35,7 @@ class OrderServiceImpl implements OrderService {
     public OrderDto create(List<CreateOrderDto> productDtos) {
         Order order = new Order();
         List<ProductOrder> products = new ArrayList<>();
-        Double value = 0d;
+        double value = 0;
 
         for (CreateOrderDto createOrderDto : productDtos) {
             Product product = productService.findById(createOrderDto.productDto().id());
@@ -52,14 +54,19 @@ class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> list(Pageable pageable) {
-        if (pageable == null) {
-            pageable = Pageable.unpaged();
-        }
+    public OrderPageDto list(Pageable pageable) {
+        return new OrderPageDto(repository.findAll(pageable));
+    }
 
-        return repository.findAll(pageable)
-                .map(OrderDto::new)
-                .stream()
-                .toList();
+    @Override
+    @Transactional
+    public OrderDto addProduct(Long id, NewProductDto newProductDto) {
+        Order order = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Order with id %d not found.", id)));
+        Product product = productService.findById(newProductDto.id());
+        ProductOrder productOrder = new ProductOrder(new ProductOrderId(order, product), newProductDto.quantity());
+        order.addProduct(productOrder);
+        order.setPrice(order.getPrice() + product.getPrice() * newProductDto.quantity());
+        return new OrderDto(order);
     }
 }

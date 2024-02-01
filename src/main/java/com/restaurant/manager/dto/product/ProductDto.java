@@ -17,7 +17,7 @@ public record ProductDto(
         String name,
 
         @NotNull
-        @DecimalMin(value = "0.01", inclusive = false)
+        @DecimalMin(value = "0.01")
         @Schema(description = "Product price", example = "8.90")
         Double price,
 

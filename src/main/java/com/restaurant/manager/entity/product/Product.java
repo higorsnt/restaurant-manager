@@ -2,6 +2,8 @@ package com.restaurant.manager.entity.product;
 
 import com.restaurant.manager.entity.category.Category;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 import java.util.Objects;
 
@@ -22,6 +24,7 @@ public class Product {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "CATEGORY")
+    @JdbcType(PostgreSQLEnumJdbcType.class)
     private Category category;
 
     public Product() {
