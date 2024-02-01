@@ -25,7 +25,6 @@ class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional
     public ProductDto create(CreateProductDto createProductDto) {
         Product product = createProductDto.toEntity();
         product = repository.save(product);
@@ -38,15 +37,15 @@ class ProductServiceImpl implements ProductService {
         Product product = repository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Product with id %d not found.", productId)));
 
-        if (!Objects.equals(updateProductDto.name(), product.getName())) {
+        if (updateProductDto.name() != null && !Objects.equals(product.getName(), updateProductDto.name())) {
             product.setName(updateProductDto.name());
         }
 
-        if (!Objects.equals(updateProductDto.price(), product.getPrice())) {
+        if (updateProductDto.price() != null && !Objects.equals(product.getPrice(), updateProductDto.price())) {
             product.setPrice(updateProductDto.price());
         }
 
-        if (!Objects.equals(updateProductDto.category(), product.getCategory())) {
+        if (updateProductDto.category() != null && !Objects.equals(product.getCategory(), updateProductDto.category())) {
             product.setCategory(updateProductDto.category());
         }
 
@@ -62,7 +61,7 @@ class ProductServiceImpl implements ProductService {
     public ProductPageDto list(String name, Pageable pageable) {
         Page<Product> result;
         if (name != null) {
-            result = repository.findByNameContaining(name, pageable);
+            result = repository.findByNameContainingIgnoreCase(name, pageable);
         } else {
             result = repository.findAll(pageable);
         }
