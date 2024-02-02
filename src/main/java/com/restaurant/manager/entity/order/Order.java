@@ -3,6 +3,7 @@ package com.restaurant.manager.entity.order;
 import com.restaurant.manager.entity.product_order.ProductOrder;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,10 +19,12 @@ public class Order {
     @Column(name = "PRICE")
     private Double price;
 
-    @OneToMany(mappedBy = "id.order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<ProductOrder> products;
 
     public Order() {
+        this.price = 0.0;
+        this.products = new ArrayList<>();
     }
 
     public Order(Double price, List<ProductOrder> products) {

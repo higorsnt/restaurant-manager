@@ -89,7 +89,7 @@ public class ProductController {
             responseCode = "200",
             description = "List with all filtered products",
             content = {@Content(mediaType = "application/json",
-                    schema =@Schema(implementation = ProductPageDto.class))}
+                    schema = @Schema(implementation = ProductPageDto.class))}
     )
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

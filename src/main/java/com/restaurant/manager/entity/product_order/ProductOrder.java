@@ -1,9 +1,8 @@
 package com.restaurant.manager.entity.product_order;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.restaurant.manager.entity.order.Order;
+import com.restaurant.manager.entity.product.Product;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -11,26 +10,33 @@ import java.util.Objects;
 @Table(name = "PRODUCT_ORDER")
 public class ProductOrder {
 
-    @EmbeddedId
-    private ProductOrderId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Long id;
 
-    @Column(name = "quantity")
+    @ManyToOne
+    @JoinColumn(name = "CUSTOMER_ORDER_ID")
+    private Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "PRODUCT_ID")
+    private Product product;
+
+    @Column(name = "QUANTITY")
     private Integer quantity;
 
     public ProductOrder() {
     }
 
-    public ProductOrder(ProductOrderId id, Integer quantity) {
-        this.id = id;
+    public ProductOrder(Order order, Product product, Integer quantity) {
+        this.order = order;
+        this.product = product;
         this.quantity = quantity;
     }
 
-    public ProductOrderId getId() {
+    public Long getId() {
         return id;
-    }
-
-    public void setId(ProductOrderId id) {
-        this.id = id;
     }
 
     public Integer getQuantity() {
@@ -39,6 +45,22 @@ public class ProductOrder {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     @Override

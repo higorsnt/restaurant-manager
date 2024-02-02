@@ -49,7 +49,7 @@ public class OrderController {
     )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto create(List<CreateOrderDto> orderDtos) {
+    public OrderDto create(@Valid @RequestBody List<CreateOrderDto> orderDtos) {
         return orderService.create(orderDtos);
     }
 

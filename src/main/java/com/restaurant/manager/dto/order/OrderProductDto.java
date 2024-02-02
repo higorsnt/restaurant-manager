@@ -13,7 +13,7 @@ public record OrderProductDto(
 ) {
     public OrderProductDto(ProductOrder productOrder) {
         this (
-                new ProductDto(productOrder.getId().getProduct()),
+                new ProductDto(productOrder.getProduct()),
                 productOrder.getQuantity()
         );
     }
